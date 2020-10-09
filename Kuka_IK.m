@@ -17,7 +17,7 @@ H_trans_symbolic=Rz(q1)*Tx(a1)*Tz(d1)*Ry(q2)*Tz(d2)*Ry(q3-delta_q)*Tx(d3_dash)*R
 H_rot_symbolic=Rx(q4)*Ry(q5)*Rx(q6)*Tx(a3);
 H_symbolic=H_trans_symbolic*H_rot_symbolic; % EndEffector Homogenous Matrix
 H_symbolic=simplify(H_symbolic)
-q=[pi/3 pi/3 pi/3 0 0 0] % give our angles to robot
+q=[pi/6 pi/4 pi/5 pi/6 pi/3 pi/2] % give our angles to robot
 q1=q(1);q2=q(2);q3=q(3);q4=q(4);q5=q(5);q6=q(6);
 
 %subsitute with angles in Forward Kinematics Equations
@@ -27,7 +27,7 @@ H_trans=Rz(q1)*Tz(d1)*Tx(a1)*Ry(q2)*Tz(d2)*Ry(q3-delta_q)*Tx(d3_dash)*Ry(delta_q
 %Rotation Part
 H_rot=Rx(q4)*Ry(q5)*Rx(q6)*Tx(a3);
 %Full EndEffector Homogoneous Matrix
-H=H_trans*H_rot;
+H=H_trans*H_rot
 
 
 
@@ -72,17 +72,13 @@ if nx ~= 1
     q4_2=atan2(-ny,nz);
     q6_1=atan2(sx,ax);
     q6_2=atan2(-sx,-ax);
-    if ax~=0
-        q5_1=atan2(ax/(cos(q6)),nx);
-        q5_2=atan2(-ax/(cos(q6)),nx);
-    else
-        q5_1=atan2(sx/(sin(q6)),nx);
-        q5_2=atan2(-sx/(sin(q6)),nx);
+    q5_1=atan2(sqrt(ax^2+sx^2),nx);
+    q5_2=atan2(-sqrt(ax^2+sx^2),nx);
+    if ((q5_1 > -1e-5) && (q5_1 < 1e-5) ) || ((q5_2 > -1e-5) && (q5_2 < 1e-5))
+    disp('singularity');
     end
 else
-    q5=acos(nx);
-    q5_1=q5;
-    q5_2=q5;
+disp('singularity');
 end
 %%%
 fprintf('1st solution IK angles   q1=%f  , q2=%f  , q3=%f, q4=%f  , q5=%f  , q6=%f \n \n Matrix for these angles',q1,q2,q3,q4_1,q5_1,q6_1);
@@ -105,9 +101,9 @@ H2=H_trans*H_rot
 q1_2=q1;
 q2_2=q2+2*psi;
 q3_2=-(3*pi/2)+psi2+delta_q;
-H_trans=Rz(q1_2)*Tz(d1)*Tx(a1)*Ry(q2_2)*Tz(d2)*Ry(q3_2-delta_q)*Tx(d3_dash)*Ry(delta_q);
 
-H_456_2=H_trans/H;
+H_trans=Rz(q1_2)*Tz(d1)*Tx(a1)*Ry(q2_2)*Tz(d2)*Ry(q3_2-delta_q)*Tx(d3_dash)*Ry(delta_q);
+H_456_2=H_trans\H;
 
 
 %%%
@@ -129,17 +125,13 @@ if nx ~= 1
     q4_2=atan2(-ny,nz);
     q6_1=atan2(sx,ax);
     q6_2=atan2(-sx,-ax);
-    if ax~=0
-        q5_1=atan2(ax/(cos(q6)),nx);
-        q5_2=atan2(-ax/(cos(q6)),nx);
-    else
-        q5_1=atan2(sx/(sin(q6)),nx);
-        q5_2=atan2(-sx/(sin(q6)),nx);
+    q5_1=atan2(sqrt(ax^2+sx^2),nx);
+    q5_2=atan2(-sqrt(ax^2+sx^2),nx);
+    if ((q5_1 > -1e-5) && (q5_1 < 1e-5) ) || ((q5_2 > -1e-5) && (q5_2 < 1e-5))
+    disp('singularity');
     end
 else
-    q5=acos(nx);
-    q5_1=q5;
-    q5_2=q5;
+disp('singularity');
 end
 %%%
 %%%
@@ -180,7 +172,7 @@ q3_3=-(3*pi/2)+psi2+delta_q;
 H_trans=Rz(q1_3)*Tz(d1)*Tx(a1)*Ry(q2_3)*Tz(d2)*Ry(q3_3-delta_q)*Tx(d3_dash)*Ry(delta_q);
 
 
-H_456_3=H_trans/H;
+H_456_3=H_trans\H;
 
 
 %%%
@@ -202,17 +194,13 @@ if nx ~= 1
     q4_2=atan2(-ny,nz);
     q6_1=atan2(sx,ax);
     q6_2=atan2(-sx,-ax);
-    if ax~=0
-        q5_1=atan2(ax/(cos(q6)),nx);
-        q5_2=atan2(-ax/(cos(q6)),nx);
-    else
-        q5_1=atan2(sx/(sin(q6)),nx);
-        q5_2=atan2(-sx/(sin(q6)),nx);
+    q5_1=atan2(sqrt(ax^2+sx^2),nx);
+    q5_2=atan2(-sqrt(ax^2+sx^2),nx);
+    if ((q5_1 > -1e-5) && (q5_1 < 1e-5) ) || ((q5_2 > -1e-5) && (q5_2 < 1e-5))
+    disp('singularity');
     end
 else
-    q5=acos(nx);
-    q5_1=q5;
-    q5_2=q5;
+disp('singularity');
 end
 %%%
 
@@ -240,7 +228,7 @@ q2_4=q2_3-2*psi;
 q3_4=+pi/2-psi2+delta_q;
 H_trans=Rz(q1_4)*Tz(d1)*Tx(a1)*Ry(q2_4)*Tz(d2)*Ry(q3_4-delta_q)*Tx(d3_dash)*Ry(delta_q);
 
-H_456_4=H_trans/H;
+H_456_4=H_trans\H;
 
 %%%
 nx=H_456_4(1,1);
@@ -261,17 +249,13 @@ if nx ~= 1
     q4_2=atan2(-ny,nz);
     q6_1=atan2(sx,ax);
     q6_2=atan2(-sx,-ax);
-    if ax~=0
-        q5_1=atan2(ax/(cos(q6)),nx);
-        q5_2=atan2(-ax/(cos(q6)),nx);
-    else
-        q5_1=atan2(sx/(sin(q6)),nx);
-        q5_2=atan2(-sx/(sin(q6)),nx);
+    q5_1=atan2(sqrt(ax^2+sx^2),nx);
+    q5_2=atan2(-sqrt(ax^2+sx^2),nx);
+    if ((q5_1 > -1e-5) && (q5_1 < 1e-5) ) || ((q5_2 > -1e-5) && (q5_2 < 1e-5))
+    disp('singularity');
     end
 else
-    q5=acos(nx);
-    q5_1=q5;
-    q5_2=q5;
+disp('singularity');
 end
 %%%
 %%%
@@ -283,7 +267,7 @@ H_trans=Rz(q1_4)*Tz(d1)*Tx(a1)*Ry(q2_4)*Tz(d2)*Ry(q3_4-delta_q)*Tx(d3_dash)*Ry(d
 %Rotation Part
 H_rot=Rx(q4_1)*Ry(q5_1)*Rx(q6_1)*Tx(a3);
 %Full EndEffector Homogoneous Matrix
-H5=H_trans*H_rot
+H7=H_trans*H_rot
 fprintf('8th solution IK angles   q1=%f  , q2=%f  , q3=%f, q4=%f  , q5=%f  , q6=%f \n \n Matrix for these angles',q1_4,q2_4,q3_4,q4_2,q5_2,q6_2);
 
 %Translation Part
@@ -291,4 +275,4 @@ H_trans=Rz(q1_4)*Tz(d1)*Tx(a1)*Ry(q2_4)*Tz(d2)*Ry(q3_4-delta_q)*Tx(d3_dash)*Ry(d
 %Rotation Part
 H_rot=Rx(q4_2)*Ry(q5_2)*Rx(q6_2)*Tx(a3);
 %Full EndEffector Homogoneous Matrix
-H6=H_trans*H_rot
+H8=H_trans*H_rot
