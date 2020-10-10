@@ -17,7 +17,7 @@ delta_q=atan(a2/d3);
 
 distance= d2+d3_dash+a3 ;
 absolute_limit= sqrt((px-25)^2+py^2 + (pz-400)^2 );
-almost_limit = sqrt((px+25)^2+ py^2 + (pz-400)^2 );
+border_limit = sqrt((px+25)^2+ py^2 + (pz-400)^2 );
 
 if absolute_limit <= distance
 
@@ -150,7 +150,7 @@ H4=H_trans*H_rot
 
 
 
-if almost_limit <= distance
+if border_limit <= distance
 
 %case 5&6
 
